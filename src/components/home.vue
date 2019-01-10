@@ -1,12 +1,12 @@
 <template>
   <div class="hello">
     <x-header :title="title" :left-options="{showBack: false}"></x-header>
-    <search @on-change="getSearchResult" :results="searchResults" position="absolute" auto-scroll-to-top top="46px" @on-focus="onFocus" @on-cancel="onCancel" @on-submit="onSubmit"  v-model="searchValue" ref="search"></search>
+    <search @on-change="getSearchResult" :results="searchResults" position="absolute" auto-scroll-to-top top="46px" @on-focus="onFocus" @on-cancel="onCancel" @on-result-click="onResultClick" @on-submit="onSubmit"  v-model="searchValue" ref="search"></search>
     <swiper :list="demoList" dots-position="right">
     </swiper>
     <!-- <router-link v-for="(item, i) in gridList" :key="i" :to="{ name: 'groupdetail', params: { id: item.label} }">{{item.label}}</router-link> -->
     <grid :cols='5' :show-lr-borders="false" :show-vertical-dividers="false" >
-      <grid-item link='/groupdetail?id=${item.label}' :label="item.label" v-for="(item, i) in gridList" :key="i">
+      <grid-item :link="'/groupdetail?id='+item.label" :label="item.label" v-for="(item, i) in gridList" :key="i">
           <img slot="icon" :src="item.img" alt="">
       </grid-item>
     </grid>
@@ -31,27 +31,30 @@
         </div>
       </div>
     </card>
-    <load-more :show-loading="showloading" :tip="loadTips"></load-more>
+    <div v-if="showloading">
+      <load-more :show-loading="showloading" :tip="loadTips"></load-more>
+    </div>
   </div>
 </template>
 <script>
 import { XHeader, Swiper, SwiperItem, Search, Grid, GridItem, Card } from 'vux'
+// import { setTimeout } from 'timers';
 
 const imgList = [
   {
-    img: 'http://placeholder.qiniudn.com/800x300/FF3B3B/ffffff',
+    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547015235404&di=d381a6334c17ef060c9d0011c3180323&imgtype=0&src=http%3A%2F%2Fpic1.cxtuku.com%2F00%2F09%2F85%2Fb4943aac377e.jpg',
     title: '送你一朵花'
   },
   {
-    img: 'http://placeholder.qiniudn.com/800x300/FFEF7D/ffffff',
+    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547015175654&di=03f3489a0bf9b3e43fd685ee4bcb84a2&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201411%2F07%2F20141107164412_v284V.jpeg',
     title: '送你一次旅行'
   },
   {
-    img: 'http://placeholder.qiniudn.com/800x300/8AEEB1/ffffff',
+    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547015280633&di=59cca6c544f68b6e43eafa6a7688b623&imgtype=0&src=http%3A%2F%2Fpic168.nipic.com%2Ffile%2F20180607%2F4587115_105940147031_2.jpg',
     title: '送你一顿美食'
   },
   {
-    img: 'http://placeholder.qiniudn.com/800x300/8AEEB1/ffffff',
+    img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547015297864&di=d3159b6bfd6a6eb7fbb3bda299e1118e&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F3804079cb84b828dc620501323a72e29a50e54328922-JRfbnX_fw658',
     title: '送你一个笑脸'
   }
 ]
@@ -118,7 +121,14 @@ export default {
       console.log('on-change', val)
       this.searchResults = val ? getResult(this.searchValue) : []
     },
+    onResultClick (e) {
+      console.log('on Result Click')
+      console.log(e)
+      this.searchValue = e.title
+    },
     onSubmit () {
+      console.log('on Submit')
+
       this.$refs.search.setBlur()
       this.$vux.toast.show({
         type: 'text',
@@ -133,9 +143,16 @@ export default {
       console.log('on Cancel')
     },
     loadMore () {
+      let _this = this
       console.log('获取更多数据')
       this.showloading = true
       this.loadTips = '正在加载'
+      let imgList = _this.imgList
+      setTimeout(function () {
+        _this.imgList = _this.imgList.concat(imgList)
+        _this.showloading = false
+        console.log(_this.imgList)
+      }, 2000)
     }
     // this.$router
   },
@@ -213,16 +230,14 @@ function getResult (val) {
 }
 .card-content {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  padding: 4px;
   box-sizing: border-box;
 }
 .card-content .img {
-  width: 24%;
+  width: 25%;
   height: 80px;
-  margin: 2px;
+  padding: 2px;
   box-sizing: border-box;
+  display: inline-block;
 }
 </style>

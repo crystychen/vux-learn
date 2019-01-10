@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
-    <x-header :title="title" :left-options="{showBack: true}"></x-header>
-    {{$route.query.id}}
+    <x-header :title="$route.query.id" :left-options="{showBack: true}"></x-header>
   </div>
 </template>
 
@@ -16,7 +15,6 @@ export default {
   },
   data () {
     return {
-      title: ''
     }
   },
   created () {

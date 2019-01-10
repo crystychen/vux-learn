@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios' // 引入axios
+import store from './store' // 状态管理
 import { Divider, Icon, XButton, LoadMore } from 'vux'
 
 Vue.config.productionTip = false
@@ -17,6 +18,8 @@ Vue.prototype.$ajax = axios // 修改Vue的原型属性
 new Vue({
   el: '#app',
   router,
+  // 把store对象提供给"store"选项,这可以把store的实例注入所有的子组件
+  store,
   components: { App },
   template: '<App/>'
 })

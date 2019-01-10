@@ -26,6 +26,10 @@ export default {
   },
   methods: {
     goToIndex () {
+      console.log('跳转到首页逛逛')
+      this.$router.push({
+        path: '/'
+      })
     }
   }
 }
