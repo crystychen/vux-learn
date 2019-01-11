@@ -20,7 +20,6 @@
       </div>
       <div class="bscroll"
            ref="bscroll">
-        <!-- <div class="scroll-fixed-title">热销榜</div> -->
         <div class="bscroll-container">
           <div class="scroll-nav-panel food-list-hook"
                v-for="(item, index) in goodsList"
@@ -202,17 +201,7 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      //   console.log(this.$refs)
-      //   let bscrollDom = this.$refs.bscroll
-      //   this.aBScroll = new BScroll(bscrollDom, {
-      //     click: true,
-      //     scrollY: true,
-      //     probeType: 0
-      //   })
       this._initScroll()
-      //   this.aBScroll.on('scroll', position => {
-      //     this.$emit('scroll', position)
-      //   })
     })
   },
   created () {
@@ -238,9 +227,6 @@ export default {
       if (!e._constructed) {
         return
       }
-      // this.currentIndex = index
-      // let currentLi = this.$refs['current-li']
-      // this.aBScroll.scrollToElement(currentLi[index], 0)
       let goodsList = this.$refs.bscroll.getElementsByClassName('food-list-hook')
       let el = goodsList[index]
       this.aBScroll.scrollToElement(el, 300)
@@ -268,7 +254,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .content {
   display: flex;
   height: 100%;
@@ -290,7 +276,7 @@ export default {
 }
 .menu-wrap {
   width: 60px;
-  height: 100%;
+  height: 400px;
   position: relative;
   left: 0;
 }
