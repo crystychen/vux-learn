@@ -832,7 +832,6 @@ export default {
         this.currentIndex = 0
         return
       }
-
       // 计算 currentIndex 的值
       for (let i = 0; i < this.listHeight.length - 1; i++) {
         let height1 = this.listHeight[i]
@@ -842,7 +841,6 @@ export default {
           return
         }
       }
-
       // 当超 -newVal > 最后一个高度的时候
       // 因为 this.listHeight 有头尾，所以需要 - 2
       this.currentIndex = this.listHeight.length - 2
@@ -874,14 +872,21 @@ export default {
       // 获取到绑定的index
       let index = e.target.getAttribute('data-index')
       // 使用better-scroll的scrollToElement方法实现跳转
-      console.log(index)
       this.scrollElement(index)
+
+      // 记录一下点击时候的Y坐标和index
+      let firstTouch = e.touches[0].pageY
+      this.touch.y1 = firstTouch
+      this.touch.anchorIndex = index
     },
     onShortcutMove (e) {
+      // 再记录一下移动时候的Y坐标，然后计算出移动了几个索引
       let touchMove = e.touches[0].pageY
       this.touch.y2 = touchMove
+      // 这里的16.7是索引元素的高度
       let delta = Math.floor((this.touch.y2 - this.touch.y1) / 16.7)
 
+      // 计算最后的位置
       let index = this.touch.anchorIndex * 1 + delta
       this.scrollElement(index)
     },
@@ -894,8 +899,8 @@ export default {
       } else if (index > this.listHeight.length - 2) {
         index = this.listHeight.length - 2
       }
-      // this.scrollY = -this.listHeight[index]
-      console.log(index, this.$refs.listGroup[index])
+      // listHeight 是在正的，所以加个-
+      this.scrollY = -this.listHeight[index]
       this.scroll.scrollToElement(this.$refs.listGroup[index], 200)
     },
     _calculateHeight () {
@@ -920,7 +925,7 @@ ul {
   padding: 0;
 }
 .hello {
-  height: 100%
+  height: 100%;
 }
 .box {
   width: 100%;
@@ -948,7 +953,7 @@ ul {
     .line-board {
       width: 95%;
       height: 6px;
-      background: rgb(199, 198, 198)
+      background: rgb(199, 198, 198);
     }
     .list-group-item {
       display: flex;
@@ -957,7 +962,7 @@ ul {
       margin: 0 0 0 20px;
       border-bottom: 1px solid rgb(219, 219, 219);
       &:last-child {
-        border: none
+        border: none;
       }
       .avatar {
         width: 50px;
